@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>About</title>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@^3/primeflex.css">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+  </head>
+  <body class="h-screen w-screen m-0 surface-ground">
+    <div class="w-full h-full flex flex-row">
+        <div class="flex-grow-1">
+          <div class="w-full m-2">
+            <img src="/assets/images/uvuyo.png" alt="2Yetis Logo" height="30px">
+          </div>
+          <div class="m-2">
+            <h1 id="rules">Rules</h1>
+
+<p>The rule engine is used to process events. Every endpoint (connector or adapter) has its own rule engine. The rule engine associated with the adapter contains rules to normalize events. This means that it sets the events to a uvuyo common event format connectors can rely on. This allows it in more complex environments to send events from one connector to multiple adapters of different type.</p>
+
+<p>A rule engine loads a list of modules. Every module contains a list of event rules. An event rule usually has a trigger. A trigger is a Boolean expression. If the expression is true the rule is fired, If the expression is false the rule is ignored. If a rule does not have a trigger, it is always fired.</p>
+
+<p>Rules are triggered in the order they are loaded. The rules are loaded module by module and within the module rule by rule. A rule in a module loaded later in the list will be executed after a rule of a module loaded earlier in the list. A rule following another rule in the same module will be executed after that rule.</p>
+
+<p>The rule engine supports three types of rules. The filter rule, the map rule and the script rule.</p>
+
+          </div>
+        </div>
+        <div class="h-full surface-section flex flex-column" style="width: 600px;">
+          <div class="flex-grow-1 m-2"> 
+            <ul class="list-none p-0 m-0">
+    
+      <li class="py-1"><a href="/" class="text-primary" >Overview</a></li>
+      
+    
+      <li class="py-1"><a href="/getting-started.html" class="text-primary" >Getting Started</a></li>
+      
+    
+      <li class="py-1"><a href="/about.html" class="text-primary" >About</a></li>
+      
+    
+      <li class="py-1"><a href="/architecture" class="text-primary" >Architecture</a></li>
+      
+    
+      <li class="py-1"><a href="/rules.html" class="text-primary" class="font-light">Rules</a></li>
+      
+        <ul>
+          
+            <li class="py-1"><a href="/rules/filter-rules.html" class="text-primary" class="font-light">Filter Rules</a></li>
+          
+            <li class="py-1"><a href="/rules/map-rules.html" class="text-primary" class="font-light">Map Rules</a></li>
+          
+            <li class="py-1"><a href="/rules/script-rules.html" class="text-primary" class="font-light">Script Rules</a></li>
+          
+        </ul>
+      
+    
+      <li class="py-1"><a href="/hardware-and-software-requirements.html" class="text-primary" >Hardware and Software Requirements</a></li>
+      
+    
+</ul>
+  
+          </div>
+          <div class="m-2 flex justify-content-end">
+            <img src="/assets/images/poweredby.png" alt="powerby Logo" height="30px">
+          </div>
+        </div>
+    </div>
+  </body>
+</html>

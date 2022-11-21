@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Requirements</title>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@^3/primeflex.css">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+  </head>
+  <body class="h-screen w-screen m-0 surface-ground">
+    <div class="w-full h-full flex flex-row">
+        <div class="flex-grow-1">
+          <div class="w-full m-2">
+            <img src="/assets/images/uvuyo.png" alt="2Yetis Logo" height="30px">
+          </div>
+          <div class="m-2">
+            <h1 id="hardware-and-software-requirements">Hardware and Software Requirements</h1>
+
+<p>The uvuyo gateway is build based on java version 12. It runs on all major Linux systems including Ubuntu, Red Hat and Suse which are not out of support by their suppliers. For the Telefonica installation we chose to use RHEL 7.9 for the test and production system. Before upgrading or switching to new OS versions in production, the upgrade should be performed and tested in the test environment. This should not just include the upgrading process of the operating system, but also must include the functional testing of the adapter itself.</p>
+
+<p>Customers must ensure that all security fixes are installed in time on the test and the production environment.</p>
+
+<p>No Database is required to run the uvuyo gateway</p>
+
+<h2 id="sizing-kafka-instance-provided">Sizing Kafka instance provided</h2>
+
+<p>The following hardware is required to run a node in the Test environment hosting the BEM Event Connector and the Helix ITSM Adapter:</p>
+
+<p>8 Cores, 16GB Memory, 256 GB Storage</p>
+
+<p>The following hardware is required to run a node in the Production environment hosting the BEM Event Connector and the Helix ITSM Adapter:</p>
+
+<p>16 Cores, 16GB Memory, 512 GB Storage</p>
+
+<h2 id="sizing-kafka-instance-not-provided">Sizing Kafka instance not provided</h2>
+
+<p>If a kafka server is not provided and needs to be setup on the hosts running the uvuyo gateway additional hardware is required.</p>
+
+<p>The following hardware is required to run a node in the Test environment hosting the BEM Event Connector and the Helix ITSM Adapter:</p>
+
+<p>16 Cores, 32GB Memory, 512 GB Storage</p>
+
+<p>The following hardware is required to run a node in the Production environment hosting the BEM Event Connector and the Helix ITSM Adapter:</p>
+
+<p>32 Cores, 32GB Memory, 1024 GB Storage</p>
+
+
+          </div>
+        </div>
+        <div class="h-full surface-section flex flex-column" style="width: 600px;">
+          <div class="flex-grow-1 m-2"> 
+            <ul class="list-none p-0 m-0">
+    
+      <li class="py-1"><a href="/" class="text-primary" >Overview</a></li>
+      
+    
+      <li class="py-1"><a href="/getting-started.html" class="text-primary" >Getting Started</a></li>
+      
+    
+      <li class="py-1"><a href="/about.html" class="text-primary" >About</a></li>
+      
+    
+      <li class="py-1"><a href="/architecture" class="text-primary" >Architecture</a></li>
+      
+    
+      <li class="py-1"><a href="/rules.html" class="text-primary" >Rules</a></li>
+      
+        <ul>
+          
+            <li class="py-1"><a href="/rules/filter-rules.html" class="text-primary" >Filter Rules</a></li>
+          
+            <li class="py-1"><a href="/rules/map-rules.html" class="text-primary" >Map Rules</a></li>
+          
+            <li class="py-1"><a href="/rules/script-rules.html" class="text-primary" >Script Rules</a></li>
+          
+        </ul>
+      
+    
+      <li class="py-1"><a href="/hardware-and-software-requirements.html" class="text-primary" class="font-light">Hardware and Software Requirements</a></li>
+      
+    
+</ul>
+  
+          </div>
+          <div class="m-2 flex justify-content-end">
+            <img src="/assets/images/poweredby.png" alt="powerby Logo" height="30px">
+          </div>
+        </div>
+    </div>
+  </body>
+</html>

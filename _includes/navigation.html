@@ -1,0 +1,13 @@
+<ul class="list-none p-0 m-0">
+    {% for item in site.data.navigation %}
+      <li class="py-1"><a href="{{ item.link }}" class="text-primary" {% if page.url == item.link %}class="font-light"{% endif %}>{{ item.name }}</a></li>
+      {% if item.details %}
+        <ul>
+          {% for details in item.details %}
+            <li class="py-1"><a href="{{ details.link }}" class="text-primary" {% if page.url == item.link %}class="font-light"{% endif %}>{{ details.name }}</a></li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endfor %}
+</ul>
+  
