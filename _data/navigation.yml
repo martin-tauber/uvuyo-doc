@@ -7,7 +7,7 @@
 - name: Architecture
   link: architecture  
 - name: Rules
-  link: /rules.html
+  link: rules.html
   details:
   - name: Filter Rules
     link: rules/filter-rules.html

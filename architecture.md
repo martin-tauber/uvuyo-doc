@@ -9,7 +9,7 @@ Connectors and adapters run in uvuyo nodes. An uvuyo node can host multiple conn
 
 The simplest uvuyo installation would look like this:
 
-<img src="/assets/images/pic1.png"
+<img src="assets/images/pic1.png"
      alt="Simplest Architecture"
      style="width: 300px;" />
 
@@ -19,7 +19,7 @@ uvuyo nodes are stateless, meaning they will not store any information about the
 
 uvuyo nodes can be clustered into uvuyo clusters. An uvuyo clusters are sets of uvuyo nodes. uvuyo clusters are setup for scalability and availability reasons. If a node in a cluster fails, the other nodes are going to take over the work of the node.
 
-<img src="/assets/images/pic2.png"
+<img src="assets/images/pic2.png"
      alt="Simplest Architecture"
      style="width: 800px;" />
 
@@ -33,7 +33,7 @@ After picking up the event from the send topic and sending it to the destination
 
 The reply topic should be configured to have the same number of partitions as the number of uvuyo nodes in the cluster hosting the connectors.
 
-<img src="/assets/images/pic3.png"
+<img src="assets/images/pic3.png"
      alt="Simplest Architecture"
      style="width: 800px;" />
 
