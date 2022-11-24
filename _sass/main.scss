@@ -12,7 +12,38 @@ body {
     font-family: var(--font-family);
 }
 
+.header {
+    height: var(--header-height);
+    width: 100%;
+}
+
+.body {
+    height: calc(100% - var(--header-height));
+    width: 100%;
+}
+
+.toc {
+    list-style-type: none;
+    padding: 0px;
+}
+
+.toc-entry {
+    padding: 4px 10px 4px 10px;
+    margin: 0px 4px;    
+}
+
+.toc-entry:hover {
+    background-color: #3f4356;
+    border-radius: 3px;    
+}
+
+.toc-entry > a {
+    color: var(--primary-color);
+}
+
 :root {
+    --header-height: 3rem;
+
     --text-color:#495057;
     --text-color-secondary:#6c757d;
     --primary-color:#00abbb; // customized

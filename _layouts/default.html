@@ -6,24 +6,55 @@
     <link rel="stylesheet" href="https://unpkg.com/primeflex@^3/primeflex.css">
     <link rel="stylesheet" href="assets/css/styles.css">
   </head>
-  <body class="h-screen w-screen m-0 surface-ground">
-    <div class="w-full h-full flex flex-row">
-        <div class="flex-grow-1">
-          <div class="w-full m-2">
-            <img src="assets/images/uvuyo.png" alt="2Yetis Logo" height="30px">
-          </div>
-          <div class="m-2">
-            {{ content }}
-          </div>
+  <body class="h-screen w-screen m-0 surface-section">
+    <!-- Header -->
+    <div class="header flex flex-row">
+      <div class="flex1"><img src="assets/images/uvuyo.png" alt="2Yetis Logo" height="30px"></div>
+
+      <div>
+        {{ page.title }}
+      </div>
+
+      <div class="flex1">
+        
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="body w-full flex flex-row surface-ground justify-content-center">
+      <!-- Left -->
+      <div class="flex1"></div>
+
+      <div style="width: 14rem;">
+        {% include navigation.html %}
+      </div>
+
+      <div style="width: 50rem;" class="surface-section border-round-md p-3 my-3 overflow-auto">
+        {{ content }}
+      </div>
+
+      <div style="width: 14rem;">
+        {{ content | toc_only }}
+      </div>
+
+<!--
+      !-- Middle --
+      <div style="max-width: 50rem;">
+        <div class="m-2 surface-section border-round-md p-2 mt-3">
+           content 
         </div>
-        <div class="h-full surface-section flex flex-column" style="width: 600px;">
-          <div class="flex-grow-1 m-2"> 
-            {% include navigation.html %}
-          </div>
-          <div class="m-2 flex justify-content-end">
-            <img src="assets/images/poweredby.png" alt="powerby Logo" height="30px">
-          </div>
+      </div>
+
+      !-- Right --
+      <div class="h-full flex-grow-1 flex flex-column">
+        <div class="flex-grow-1 m-2"> 
+          include navigation.html
         </div>
+        <div class="m-2 flex justify-content-end">
+          <img src="assets/images/poweredby.png" alt="powerby Logo" height="30px">
+        </div>
+      </div>
+-->
     </div>
   </body>
 </html>

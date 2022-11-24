@@ -6,58 +6,91 @@
     <link rel="stylesheet" href="https://unpkg.com/primeflex@^3/primeflex.css">
     <link rel="stylesheet" href="assets/css/styles.css">
   </head>
-  <body class="h-screen w-screen m-0 surface-ground">
-    <div class="w-full h-full flex flex-row">
-        <div class="flex-grow-1">
-          <div class="w-full m-2">
-            <img src="assets/images/uvuyo.png" alt="2Yetis Logo" height="30px">
-          </div>
-          <div class="m-2">
-            <h1 id="about-page">About page</h1>
+  <body class="h-screen w-screen m-0 surface-section">
+    <!-- Header -->
+    <div class="header flex flex-row">
+      <div class="flex1"><img src="assets/images/uvuyo.png" alt="2Yetis Logo" height="30px"></div>
 
-<p>This page tells you a little bit about me.</p>
+      <div>
+        About
+      </div>
 
-          </div>
-        </div>
-        <div class="h-full surface-section flex flex-column" style="width: 600px;">
-          <div class="flex-grow-1 m-2"> 
-            <ul class="list-none p-0 m-0">
+      <div class="flex1">
+        
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="body w-full flex flex-row surface-ground justify-content-center">
+      <!-- Left -->
+      <div class="flex1"></div>
+
+      <div style="width: 14rem;">
+        <ul class="toc">
     
-      <li class="py-1"><a href="/" class="text-primary" >Overview</a></li>
+      <li class="toc-entry"><a href="/" >Overview</a></li>
       
     
-      <li class="py-1"><a href="getting-started.html" class="text-primary" >Getting Started</a></li>
+      <li class="toc-entry"><a href="getting-started.html" >Getting Started</a></li>
       
     
-      <li class="py-1"><a href="about.html" class="text-primary" >About</a></li>
+      <li class="toc-entry"><a href="about.html" >About</a></li>
       
     
-      <li class="py-1"><a href="architecture" class="text-primary" >Architecture</a></li>
+      <li class="toc-entry"><a href="architecture" >Architecture</a></li>
       
     
-      <li class="py-1"><a href="rules.html" class="text-primary" >Rules</a></li>
+      <li class="toc-entry"><a href="rules.html" >Rules</a></li>
       
         <ul>
           
-            <li class="py-1"><a href="rules/filter-rules.html" class="text-primary" >Filter Rules</a></li>
+            <li class="py-1"><a href="rules/filter-rules.html" >Filter Rules</a></li>
           
-            <li class="py-1"><a href="rules/map-rules.html" class="text-primary" >Map Rules</a></li>
+            <li class="py-1"><a href="rules/map-rules.html" >Map Rules</a></li>
           
-            <li class="py-1"><a href="rules/script-rules.html" class="text-primary" >Script Rules</a></li>
+            <li class="py-1"><a href="rules/script-rules.html" >Script Rules</a></li>
           
         </ul>
       
     
-      <li class="py-1"><a href="hardware-and-software-requirements.html" class="text-primary" >Hardware and Software Requirements</a></li>
+      <li class="toc-entry"><a href="hardware-and-software-requirements.html" >Hardware and Software Requirements</a></li>
       
     
 </ul>
   
-          </div>
-          <div class="m-2 flex justify-content-end">
-            <img src="assets/images/poweredby.png" alt="powerby Logo" height="30px">
-          </div>
+      </div>
+
+      <div style="width: 50rem;" class="surface-section border-round-md p-3 my-3 overflow-auto">
+        <h1 id="about-page">About page</h1>
+
+<p>This page tells you a little bit about me.</p>
+
+      </div>
+
+      <div style="width: 14rem;">
+        <ul id="toc" class="toc">
+<li class="toc-entry toc-h1"><a href="#about-page">About page</a></li>
+</ul>
+      </div>
+
+<!--
+      !-- Middle --
+      <div style="max-width: 50rem;">
+        <div class="m-2 surface-section border-round-md p-2 mt-3">
+           content 
         </div>
+      </div>
+
+      !-- Right --
+      <div class="h-full flex-grow-1 flex flex-column">
+        <div class="flex-grow-1 m-2"> 
+          include navigation.html
+        </div>
+        <div class="m-2 flex justify-content-end">
+          <img src="assets/images/poweredby.png" alt="powerby Logo" height="30px">
+        </div>
+      </div>
+-->
     </div>
   </body>
 </html>

@@ -1,17 +1,24 @@
 ---
 layout: default
 title: Architecture
+toc: true
 ---
+
+# Introduction
 
 The uvuyo gateway is designed to take events from various sources and convert them to various destinations. This is done using plugins into the core system called connectors and adapters. As mentioned above connectors are used to connect event sources and adapters are used to connect event destinations.
 
 Connectors and adapters run in uvuyo nodes. An uvuyo node can host multiple connectors /adapters or just a single connector/adapter.
+
+# Simplest Architecture
 
 The simplest uvuyo installation would look like this:
 
 <img src="assets/images/pic1.png"
      alt="Simplest Architecture"
      style="width: 300px;" />
+
+# Uvuyo Node     
 
 uvuyo nodes are designed to be microservices and can run either as a process on a server or within a docker container. In the Telefonica environment we going to run the node as a process on a server.
 

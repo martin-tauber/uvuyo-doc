@@ -6,20 +6,74 @@
     <link rel="stylesheet" href="https://unpkg.com/primeflex@^3/primeflex.css">
     <link rel="stylesheet" href="assets/css/styles.css">
   </head>
-  <body class="h-screen w-screen m-0 surface-ground">
-    <div class="w-full h-full flex flex-row">
-        <div class="flex-grow-1">
-          <div class="w-full m-2">
-            <img src="assets/images/uvuyo.png" alt="2Yetis Logo" height="30px">
-          </div>
-          <div class="m-2">
-            <p>The uvuyo gateway is designed to take events from various sources and convert them to various destinations. This is done using plugins into the core system called connectors and adapters. As mentioned above connectors are used to connect event sources and adapters are used to connect event destinations.</p>
+  <body class="h-screen w-screen m-0 surface-section">
+    <!-- Header -->
+    <div class="header flex flex-row">
+      <div class="flex1"><img src="assets/images/uvuyo.png" alt="2Yetis Logo" height="30px"></div>
+
+      <div>
+        Architecture
+      </div>
+
+      <div class="flex1">
+        
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="body w-full flex flex-row surface-ground justify-content-center">
+      <!-- Left -->
+      <div class="flex1"></div>
+
+      <div style="width: 14rem;">
+        <ul class="toc">
+    
+      <li class="toc-entry"><a href="/" >Overview</a></li>
+      
+    
+      <li class="toc-entry"><a href="getting-started.html" >Getting Started</a></li>
+      
+    
+      <li class="toc-entry"><a href="about.html" >About</a></li>
+      
+    
+      <li class="toc-entry"><a href="architecture" >Architecture</a></li>
+      
+    
+      <li class="toc-entry"><a href="rules.html" >Rules</a></li>
+      
+        <ul>
+          
+            <li class="py-1"><a href="rules/filter-rules.html" >Filter Rules</a></li>
+          
+            <li class="py-1"><a href="rules/map-rules.html" >Map Rules</a></li>
+          
+            <li class="py-1"><a href="rules/script-rules.html" >Script Rules</a></li>
+          
+        </ul>
+      
+    
+      <li class="toc-entry"><a href="hardware-and-software-requirements.html" >Hardware and Software Requirements</a></li>
+      
+    
+</ul>
+  
+      </div>
+
+      <div style="width: 50rem;" class="surface-section border-round-md p-3 my-3 overflow-auto">
+        <h1 id="introduction">Introduction</h1>
+
+<p>The uvuyo gateway is designed to take events from various sources and convert them to various destinations. This is done using plugins into the core system called connectors and adapters. As mentioned above connectors are used to connect event sources and adapters are used to connect event destinations.</p>
 
 <p>Connectors and adapters run in uvuyo nodes. An uvuyo node can host multiple connectors /adapters or just a single connector/adapter.</p>
+
+<h1 id="simplest-architecture">Simplest Architecture</h1>
 
 <p>The simplest uvuyo installation would look like this:</p>
 
 <p><img src="assets/images/pic1.png" alt="Simplest Architecture" style="width: 300px;" /></p>
+
+<h1 id="uvuyo-node">Uvuyo Node</h1>
 
 <p>uvuyo nodes are designed to be microservices and can run either as a process on a server or within a docker container. In the Telefonica environment we going to run the node as a process on a server.</p>
 
@@ -46,47 +100,34 @@
 <p>It is important to understand that to keep the order of events send to connectors, the events of a specific source must always be send to the same connector.</p>
 
 
-          </div>
-        </div>
-        <div class="h-full surface-section flex flex-column" style="width: 600px;">
-          <div class="flex-grow-1 m-2"> 
-            <ul class="list-none p-0 m-0">
-    
-      <li class="py-1"><a href="/" class="text-primary" >Overview</a></li>
-      
-    
-      <li class="py-1"><a href="getting-started.html" class="text-primary" >Getting Started</a></li>
-      
-    
-      <li class="py-1"><a href="about.html" class="text-primary" >About</a></li>
-      
-    
-      <li class="py-1"><a href="architecture" class="text-primary" >Architecture</a></li>
-      
-    
-      <li class="py-1"><a href="rules.html" class="text-primary" >Rules</a></li>
-      
-        <ul>
-          
-            <li class="py-1"><a href="rules/filter-rules.html" class="text-primary" >Filter Rules</a></li>
-          
-            <li class="py-1"><a href="rules/map-rules.html" class="text-primary" >Map Rules</a></li>
-          
-            <li class="py-1"><a href="rules/script-rules.html" class="text-primary" >Script Rules</a></li>
-          
-        </ul>
-      
-    
-      <li class="py-1"><a href="hardware-and-software-requirements.html" class="text-primary" >Hardware and Software Requirements</a></li>
-      
-    
+      </div>
+
+      <div style="width: 14rem;">
+        <ul id="toc" class="toc">
+<li class="toc-entry toc-h1"><a href="#introduction">Introduction</a></li>
+<li class="toc-entry toc-h1"><a href="#simplest-architecture">Simplest Architecture</a></li>
+<li class="toc-entry toc-h1"><a href="#uvuyo-node">Uvuyo Node</a></li>
 </ul>
-  
-          </div>
-          <div class="m-2 flex justify-content-end">
-            <img src="assets/images/poweredby.png" alt="powerby Logo" height="30px">
-          </div>
+      </div>
+
+<!--
+      !-- Middle --
+      <div style="max-width: 50rem;">
+        <div class="m-2 surface-section border-round-md p-2 mt-3">
+           content 
         </div>
+      </div>
+
+      !-- Right --
+      <div class="h-full flex-grow-1 flex flex-column">
+        <div class="flex-grow-1 m-2"> 
+          include navigation.html
+        </div>
+        <div class="m-2 flex justify-content-end">
+          <img src="assets/images/poweredby.png" alt="powerby Logo" height="30px">
+        </div>
+      </div>
+-->
     </div>
   </body>
 </html>
