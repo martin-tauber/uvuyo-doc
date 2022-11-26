@@ -1,6 +1,6 @@
 <ul class="toc">
     {% for item in site.data.navigation %}
-      <li class="toc-entry"><a href="{{ item.link }}" {% if page.url == item.link %}class="current"{% endif %}>{{ item.name }}</a></li>
+      <li class="toc-item"><a href="{{ item.link }}" {% if page.url == item.link %}class="current"{% endif %}>{{ item.name }}</a></li>
       {% if item.details %}
         <ul>
           {% for details in item.details %}

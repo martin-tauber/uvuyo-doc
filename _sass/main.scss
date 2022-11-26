@@ -27,17 +27,17 @@ body {
     padding: 0px;
 }
 
-.toc-entry {
+.toc-item {
     padding: 4px 10px 4px 10px;
     margin: 0px 4px;    
 }
 
-.toc-entry:hover {
+.toc-item:hover {
     background-color: #3f4356;
     border-radius: 3px;    
 }
 
-.toc-entry > a {
+.toc-item > a {
     color: var(--primary-color);
 }
 
