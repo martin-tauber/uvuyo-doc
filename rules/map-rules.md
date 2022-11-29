@@ -7,7 +7,7 @@ Map rules contain a Map of expressions. An entry in the map is a property name o
 
 Example:
 
-```YAML
+```yaml
 - name: UpdateMessageText
   triggers: _classname == 'patrolWarning' || _classname == 'patrolAlarm'
   type: Map

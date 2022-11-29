@@ -1,0 +1,306 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Installation</title>
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@^3/primeflex.css">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+  </head>
+  <body class="h-screen w-screen m-0 surface-section">
+    <!-- Header -->
+    <div class="header w-full flex flex-row surface-section justify-content-center">
+      <div class="flex-1 pt-2 flex flex-row" style="margin: auto;">
+        <div>
+          <img class="pl-2" src="/assets/images/uvuyo.png" alt="2Yetis Logo" height="30px"/>
+        </div>
+<!--        <div class="pl-3">
+          <h3 style="margin: 0px;">Documentation</h3>
+        </div> -->
+      </div>
+      <div style="width: 50rem; margin: auto;" class="px-3">
+        <h1 style="margin: 0px; display: inline;">Documentation&nbsp;</h1>(v1.0.0)
+      </div>
+
+      <div class="flex-1 flex flex-row pr-2 justify-content-end" style="margin: auto;">
+        <div>
+          <img src="/assets/images/poweredby.png" alt="powerby Logo" height="30px">
+        </div>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="body w-full flex flex-row surface-ground justify-content-center">
+      <!-- Left -->
+      <div class="flex1"></div>
+
+      <div class="toc-container">
+        <ul class="toc">
+    
+      <li class="toc-item">
+        <a href="/" >Overview</a>
+        
+      </li>
+    
+      <li class="toc-item">
+        <a href="/getting-started.html" >Getting Started</a>
+        
+      </li>
+    
+      <li class="toc-item">
+        <a href="/about.html" >About</a>
+        
+      </li>
+    
+      <li class="toc-item">
+        <a href="/architecture.html" >Architecture</a>
+        
+      </li>
+    
+      <li class="toc-item">
+        <a href="/rules.html" >Rules</a>
+        
+        <ul class="toc toc-1">
+          
+            <li class="toc-item"><a href="/rules/filter-rules.html" >Filter Rules</a></li>
+          
+            <li class="toc-item"><a href="/rules/map-rules.html" >Map Rules</a></li>
+          
+            <li class="toc-item"><a href="/rules/script-rules.html" >Script Rules</a></li>
+          
+        </ul>
+      
+      </li>
+    
+      <li class="toc-item">
+        <a href="/hardware-and-software-requirements.html" >Hardware and Software Requirements</a>
+        
+      </li>
+    
+      <li class="toc-item">
+        <a href="/installation.html" >Installation</a>
+        
+      </li>
+    
+</ul>
+  
+      </div>
+
+      <div style="width: 50rem;" class="surface-section border-round-md p-3 my-3 overflow-auto">
+        <h1 id="docker">Docker</h1>
+
+<p>uvuyo uses kafka to  pass events between the different nodes. In order to install uvuyo you
+need to install kafka. Kafka currently still needs a zookeeper installation running for coordination.
+We recommand to install at least three kafka nodes and three zookeeper nodes in production to ensure
+high availablility. These nodes shopuld be installed on different machines.</p>
+
+<p>You can use an existing kafka installation for uvuyo or install your own version of kafka. This quide
+will give you a quick introduction on installing kafka. For more detailed information please refer
+to the offical kafka documentation</p>
+
+<h2 id="install-zookeeper">Install Zookeeper</h2>
+
+<p>Before installing kafka you will need to install zookeeper. We recommand to use the bitnami zookeeper docker image. For
+test environments it is sufficiant to have a single instance of zookeeper running. For production
+environemnts it is strongly recommanded to have at least three instances of zookeeper running.</p>
+
+<hr />
+<blockquote>
+  <p><strong>NOTE:</strong>
+For more information about how to configure the bitnami zookeeper docker image go to the official
+ <a href="https://hub.docker.com/r/bitnami/zookeeper/">Bitnami Zookeeper</a> documentation.</p>
+</blockquote>
+
+<hr />
+
+<h3 id="example-single-node-installation">Example single node installation</h3>
+
+<p>Example how to run two zookeeper instances on the same host</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">--name</span> zookeeper-1 <span class="nt">--network</span> host <span class="nt">--detach</span> <span class="se">\</span>
+<span class="nt">-e</span> <span class="nv">ZOO_SERVER_ID</span><span class="o">=</span>1 <span class="se">\</span>
+<span class="nt">-e</span> <span class="nv">ZOO_PORT_NUMBER</span><span class="o">=</span>2181 <span class="se">\</span>
+<span class="nt">-e</span> <span class="nv">ALLOW_ANONYMOUS_LOGIN</span><span class="o">=</span><span class="nb">yes</span> <span class="se">\</span>
+<span class="nt">-e</span> <span class="nv">ZOO_ADMIN_SERVER_PORT_NUMBER</span><span class="o">=</span>8080  <span class="se">\</span>
+<span class="nt">-e</span> <span class="nv">ZOO_SERVERS</span><span class="o">=</span>localhost:2888:3888::1,localhost:2889:3889::2 <span class="se">\</span>
+<span class="nt">-v</span> zookeeper_1_data:/bitnami bitnami/zookeeper:3.8
+
+docker run <span class="nt">--name</span> zookeeper-2 <span class="nt">--network</span> host <span class="nt">--detach</span> <span class="se">\</span>
+<span class="nt">-e</span> <span class="nv">ZOO_SERVER_ID</span><span class="o">=</span>2 <span class="se">\</span>
+<span class="nt">-e</span> <span class="nv">ZOO_PORT_NUMBER</span><span class="o">=</span>2182 <span class="se">\</span>
+<span class="nt">-e</span> <span class="nv">ALLOW_ANONYMOUS_LOGIN</span><span class="o">=</span><span class="nb">yes</span> <span class="se">\</span>
+<span class="nt">-e</span> <span class="nv">ZOO_ADMIN_SERVER_PORT_NUMBER</span><span class="o">=</span>8081  <span class="se">\</span>
+<span class="nt">-e</span> <span class="nv">ZOO_SERVERS</span><span class="o">=</span>localhost:2888:3888::1,localhost:2889:3889::2 <span class="se">\</span>
+<span class="nt">-v</span> zookeeper_2_data:/bitnami bitnami/zookeeper:3.8
+</code></pre></div></div>
+
+<h2 id="install-kafka">Install Kafka</h2>
+
+<p>After installing zookeeper you need to install the kafka nodes. For a test environment it is sufficient to
+have a single instance of kafka running, For production environments we strongly recommand to have at least
+three instances of kafka running.</p>
+
+<hr />
+<blockquote>
+  <p><strong>NODE:</strong>
+For more informantion about how to configure the bitnami kafka docker image go to the offical
+<a href="https://hub.docker.com/r/bitnami/kafka">Bitnami Kafka</a> documentation.</p>
+</blockquote>
+
+<hr />
+
+<h3 id="example-single-node-installation-1">Example Single node installation</h3>
+
+<p>Example how to run two kafka instances on the same host. This example uses the zookeeper containers created 
+in the previous example where we ran two zookeeper containers on one host.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">--name</span> kafka-1 <span class="nt">--network</span> host <span class="nt">--detach</span> <span class="se">\</span>
+<span class="nt">-e</span> <span class="nv">KAFKA_BROKER_ID</span><span class="o">=</span>1 <span class="se">\</span>
+<span class="nt">-e</span> <span class="nv">KAFKA_CFG_ZOOKEEPER_CONNECT</span><span class="o">=</span>localhost:2181,localhost:2182 <span class="se">\</span>
+<span class="nt">-e</span> <span class="nv">KAFKA_CFG_LISTENERS</span><span class="o">=</span>PLAINTEXT://:9091 <span class="se">\</span>
+<span class="nt">-e</span> <span class="nv">KAFKA_CFG_ADVERTISED_LISTENERS</span><span class="o">=</span>PLAINTEXT://localhost:9091 <span class="se">\</span>
+<span class="nt">-e</span> <span class="nv">ALLOW_PLAINTEXT_LISTENER</span><span class="o">=</span><span class="nb">yes</span> <span class="se">\</span>
+<span class="nt">-v</span> kafka_1_data:/bitnami docker.io/bitnami/kafka:3.2
+
+docker run <span class="nt">--name</span> kafka-2 <span class="nt">--network</span> host <span class="nt">--detach</span> <span class="se">\</span>
+<span class="nt">-e</span> <span class="nv">KAFKA_BROKER_ID</span><span class="o">=</span>2 <span class="se">\</span>
+<span class="nt">-e</span> <span class="nv">KAFKA_CFG_ZOOKEEPER_CONNECT</span><span class="o">=</span>localhost:2181,localhost:2182 <span class="se">\</span>
+<span class="nt">-e</span> <span class="nv">KAFKA_CFG_LISTENERS</span><span class="o">=</span>PLAINTEXT://:9092 <span class="se">\</span>
+<span class="nt">-e</span> <span class="nv">KAFKA_CFG_ADVERTISED_LISTENERS</span><span class="o">=</span>PLAINTEXT://localhost:9092 <span class="se">\</span>
+<span class="nt">-e</span> <span class="nv">ALLOW_PLAINTEXT_LISTENER</span><span class="o">=</span><span class="nb">yes</span> <span class="se">\</span>
+<span class="nt">-v</span> kafka_2_data:/bitnami docker.io/bitnami/kafka:3.2
+</code></pre></div></div>
+
+<h3 id="creating-kafka-topics">Creating kafka topics</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kafka-topics.sh <span class="nt">--create</span> <span class="se">\</span>
+<span class="nt">--topic</span> net.2yetis.uvuyo.bppm2HelixITSM.send <span class="se">\</span>
+<span class="nt">--replication-factor</span> 2 <span class="se">\</span>
+<span class="nt">--partitions</span> 2 <span class="se">\</span>
+<span class="nt">--bootstrap-server</span> kafka-server:9092 <span class="se">\</span>
+</code></pre></div></div>
+
+<h2 id="install-uvuyo">Install uvuyo</h2>
+
+<h3 id="prepare-the-installation-directory">Prepare the installation directory</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo mkdir</span> <span class="nt">-p</span> /opt/2yetis/uvuyo/etc
+<span class="nb">sudo chown</span> <span class="nt">-R</span> ubuntu:ubuntu /opt/2yetis
+</code></pre></div></div>
+
+<h3 id="create-the-node-configuration-file">Create the node configuration file</h3>
+
+<p>An uvuyo node is configured using the nodes configuration file. The configuration file 
+needs to have at minimum the <code class="language-plaintext highlighter-rouge">uvuyo.license.key</code> and the <code class="language-plaintext highlighter-rouge">uvuyo.license.owner</code> configured.
+The node configuration file is a properties file, which means that every line consists of
+a key value pair. The file is stored in the etc directory.</p>
+
+<p>The file is called <code class="language-plaintext highlighter-rouge">{nodeid}.properties</code> where {nodeid} is the id of the node when 
+started. By default the {nodeid} is uvuyo.</p>
+
+<p>As a minimal default configuration file you would need to create the file <code class="language-plaintext highlighter-rouge">etc/uvuyo.properties</code>
+with the license information you received from 2yetis.</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># License Information
+</span>
+<span class="py">uvuyo.license.key</span><span class="p">=</span><span class="s">88b3-3d17-e2f9-b750-72c3-735d-3a41-bd57-08d7-3456-5810</span>
+<span class="py">uvuyo.license.owner</span><span class="p">=</span><span class="s">2Yetis Consulting</span>
+
+<span class="c"># Kafka Connection
+</span><span class="py">uvuyo.kafka.bootstrap.servers</span><span class="p">=</span><span class="s">localhost:9092</span>
+</code></pre></div></div>
+
+<h3 id="create-the-gateway-configuration-file">Create the gateway configuration file</h3>
+
+<p>The gateway configuration file configures the actual adpters and connectors in the gateway. The file is
+stored in the etc directory and the name is <code class="language-plaintext highlighter-rouge">node.{nodeid}.yaml</code> where {nodeid} is the id of the node
+when started. By default the {nodeid} is uvuyo.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">---</span>
+<span class="na">connectors</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="na">driver</span><span class="pi">:</span> <span class="s2">"</span><span class="s">net.the2yetis.uvuyo.integration.bppm.BppmEventConnector"</span>
+  <span class="na">node</span><span class="pi">:</span> <span class="s2">"</span><span class="s">uvuyo"</span>
+  <span class="na">id</span><span class="pi">:</span> <span class="s2">"</span><span class="s">bppm"</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">BPPM"</span>
+  <span class="na">dispatcherId</span><span class="pi">:</span> <span class="s2">"</span><span class="s">bppm2HelixITSM"</span>
+  <span class="na">active</span><span class="pi">:</span> <span class="no">true</span>
+  <span class="na">ruleModules</span><span class="pi">:</span> <span class="pi">[]</span>
+  <span class="na">port</span><span class="pi">:</span> <span class="m">1828</span>
+  <span class="na">timeout</span><span class="pi">:</span> <span class="m">1000</span>
+<span class="na">adapters</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="na">driver</span><span class="pi">:</span> <span class="s2">"</span><span class="s">net.the2yetis.uvuyo.integration.helixItsm.HelixItsmEventAdapter"</span>
+  <span class="na">node</span><span class="pi">:</span> <span class="s2">"</span><span class="s">uvuyo"</span>
+  <span class="na">id</span><span class="pi">:</span> <span class="s2">"</span><span class="s">helixItsmEventAdapter"</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">HelixItsmEventAdapter"</span>
+  <span class="na">dispatcherId</span><span class="pi">:</span> <span class="s2">"</span><span class="s">bppm2HelixITSM"</span>
+  <span class="na">active</span><span class="pi">:</span> <span class="no">true</span>
+  <span class="na">ruleModules</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">uvuyo2HelixITSM</span><span class="pi">]</span>
+  <span class="na">url</span><span class="pi">:</span> <span class="s2">"</span><span class="s">https://aena-dev-restapi.onbmc.com"</span>
+  <span class="na">jwtRefreshInterval</span><span class="pi">:</span> <span class="m">300</span>
+  <span class="na">username</span><span class="pi">:</span> <span class="s2">"</span><span class="s">activationuser"</span>
+  <span class="na">password</span><span class="pi">:</span> <span class="s2">"</span><span class="s">LCu3Ecrw9-zyF6d5"</span>
+  <span class="na">form</span><span class="pi">:</span> <span class="s2">"</span><span class="s">HPD:IncidentInterface_Create"</span>
+  <span class="na">attributes</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">First_Name</span>
+  <span class="pi">-</span> <span class="s">Last_Name</span>
+  <span class="pi">-</span> <span class="s">Description</span>
+  <span class="pi">-</span> <span class="s">Impact</span>
+  <span class="pi">-</span> <span class="s">Urgency</span>
+  <span class="pi">-</span> <span class="s">Status</span>
+  <span class="pi">-</span> <span class="s2">"</span><span class="s">Reported</span><span class="nv"> </span><span class="s">Source"</span>
+  <span class="pi">-</span> <span class="s">Service_Type</span>
+  <span class="pi">-</span> <span class="s2">"</span><span class="s">Assigned</span><span class="nv"> </span><span class="s">Group"</span>
+  <span class="pi">-</span> <span class="s2">"</span><span class="s">Assigned</span><span class="nv"> </span><span class="s">Support</span><span class="nv"> </span><span class="s">Organization"</span>
+  <span class="pi">-</span> <span class="s2">"</span><span class="s">Assigned</span><span class="nv"> </span><span class="s">Support</span><span class="nv"> </span><span class="s">Company"</span>
+</code></pre></div></div>
+
+<h3 id="create-the-rules-file">Create the rules file</h3>
+
+<p>The rules file contains the rules used to map events. Rules files are loaded by the connectors
+and adapters. If you configured an adapter or connector to load a rules file in the gateway
+configuration file, you would need to create them.</p>
+
+<p>Rule files are stored in the etc directory and names <code class="language-plaintext highlighter-rouge">module.{name}.yaml</code>, where {name} is the
+name of the rules module. You would use this name in the gateway configuration file to load 
+the appropriate rules module.</p>
+
+<h4 id="example-rule-file">Example rule file</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">MapAttributes</span>
+  <span class="na">type</span><span class="pi">:</span> <span class="s">Map</span>
+  <span class="na">attributes</span><span class="pi">:</span>
+    <span class="na">First_Name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">'Activation'"</span>
+    <span class="na">Last_Name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">'User'"</span>
+    <span class="na">Description</span><span class="pi">:</span> <span class="s2">"</span><span class="s">'REST</span><span class="nv"> </span><span class="s">API:</span><span class="nv"> </span><span class="s">Incident</span><span class="nv"> </span><span class="s">Creation'"</span>
+    <span class="na">Impact</span><span class="pi">:</span> <span class="s2">"</span><span class="s">'1-Minor/Localized'"</span>
+    <span class="na">Urgency</span><span class="pi">:</span> <span class="s2">"</span><span class="s">'4-Low'"</span>
+    <span class="na">Status</span><span class="pi">:</span> <span class="s2">"</span><span class="s">'Assigned'"</span>
+    <span class="s2">"</span><span class="s">Reported</span><span class="nv"> </span><span class="s">Source"</span><span class="err">:</span> <span class="s2">"</span><span class="s">'BMC</span><span class="nv"> </span><span class="s">Impact</span><span class="nv"> </span><span class="s">Manager</span><span class="nv"> </span><span class="s">Event'"</span>
+    <span class="na">Service_Type</span><span class="pi">:</span> <span class="s2">"</span><span class="s">'User</span><span class="nv"> </span><span class="s">Service</span><span class="nv"> </span><span class="s">Restoration'"</span>
+    <span class="s2">"</span><span class="s">Assigned</span><span class="nv"> </span><span class="s">Group"</span><span class="err">:</span> <span class="s2">"</span><span class="s">'ABC</span><span class="nv"> </span><span class="s">-</span><span class="nv"> </span><span class="s">EscaladoSMS'"</span>
+    <span class="s2">"</span><span class="s">Assigned</span><span class="nv"> </span><span class="s">Support</span><span class="nv"> </span><span class="s">Organization"</span><span class="err">:</span> <span class="s2">"</span><span class="s">'ABC</span><span class="nv"> </span><span class="s">-</span><span class="nv"> </span><span class="s">ESCALADOS'"</span>
+    <span class="s2">"</span><span class="s">Assigned</span><span class="nv"> </span><span class="s">Support</span><span class="nv"> </span><span class="s">Company"</span><span class="err">:</span> <span class="s2">"</span><span class="s">'Aena'"</span>
+</code></pre></div></div>
+
+<h3 id="create-a-volume">Create a volume</h3>
+
+<p>The uvuyo container is configured to read the configuration files from the etc directory. Therefor
+we need to create a docker volume pointing to the just created etc directory.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker volume create <span class="nt">--name</span> uvuyo_etc <span class="nt">--opt</span> <span class="nb">type</span><span class="o">=</span>none <span class="nt">--opt</span> <span class="nv">device</span><span class="o">=</span>/opt/2yetis/uvuyo/etc <span class="nt">--opt</span> <span class="nv">o</span><span class="o">=</span><span class="nb">bind</span>
+</code></pre></div></div>
+
+<h3 id="run-the-uvuyo-docker-container">Run the uvuyo docker container</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">--name</span> unode <span class="nt">--network</span> host <span class="nt">--detach</span> <span class="se">\</span>
+<span class="nt">-v</span> uvuyo_etc:/app/uvuyo/etc the2yetis/uvuyo
+</code></pre></div></div>
+
+
+      </div>
+
+      <div style="width: 14rem;">
+        <ul class="toc"><li class="toc-item"><a href="#docker">Docker</a><ul class="toc toc-1"><li class="toc-item"><a href="#install-zookeeper">Install Zookeeper</a></li><li class="toc-item"><a href="#install-kafka">Install Kafka</a></li><li class="toc-item"><a href="#install-uvuyo">Install uvuyo</a></li></ul></li></ul>
+      </div>
+    </div>
+  </body>
+</html>

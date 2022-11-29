@@ -5,7 +5,8 @@ title: Script Rules
 Script rules allow you to create scripts to manipulate events. They are the most complex rule type, but also give you the most power. Script rules have a script which is executed when the trigger expression is true. The script takes the event that should be processed as an input.
 
 Example:
-```YAML
+```yaml
+
 - name: LogEvent
   type: Script
   script: |
@@ -18,6 +19,7 @@ Example:
     } else {
       event.details="we have nothing more to say ...";
     }
+    
 ```
 
 Script rules provide you with the full power of a scripting language as “if then else” 

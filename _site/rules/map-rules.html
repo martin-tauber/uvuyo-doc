@@ -4,14 +4,14 @@
     <meta charset="utf-8">
     <title>Map Rules</title>
     <link rel="stylesheet" href="https://unpkg.com/primeflex@^3/primeflex.css">
-    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles.css">
   </head>
   <body class="h-screen w-screen m-0 surface-section">
     <!-- Header -->
     <div class="header w-full flex flex-row surface-section justify-content-center">
       <div class="flex-1 pt-2 flex flex-row" style="margin: auto;">
         <div>
-          <img class="pl-2" src="assets/images/uvuyo.png" alt="2Yetis Logo" height="30px"/>
+          <img class="pl-2" src="/assets/images/uvuyo.png" alt="2Yetis Logo" height="30px"/>
         </div>
 <!--        <div class="pl-3">
           <h3 style="margin: 0px;">Documentation</h3>
@@ -23,7 +23,7 @@
 
       <div class="flex-1 flex flex-row pr-2 justify-content-end" style="margin: auto;">
         <div>
-          <img src="assets/images/poweredby.png" alt="powerby Logo" height="30px">
+          <img src="/assets/images/poweredby.png" alt="powerby Logo" height="30px">
         </div>
       </div>
     </div>
@@ -33,36 +33,53 @@
       <!-- Left -->
       <div class="flex1"></div>
 
-      <div style="width: 14rem;">
+      <div class="toc-container">
         <ul class="toc">
     
-      <li class="toc-item"><a href="/" >Overview</a></li>
-      
+      <li class="toc-item">
+        <a href="/" >Overview</a>
+        
+      </li>
     
-      <li class="toc-item"><a href="getting-started.html" >Getting Started</a></li>
-      
+      <li class="toc-item">
+        <a href="/getting-started.html" >Getting Started</a>
+        
+      </li>
     
-      <li class="toc-item"><a href="about.html" >About</a></li>
-      
+      <li class="toc-item">
+        <a href="/about.html" >About</a>
+        
+      </li>
     
-      <li class="toc-item"><a href="architecture" >Architecture</a></li>
-      
+      <li class="toc-item">
+        <a href="/architecture.html" >Architecture</a>
+        
+      </li>
     
-      <li class="toc-item"><a href="rules.html" >Rules</a></li>
-      
-        <ul>
+      <li class="toc-item">
+        <a href="/rules.html" >Rules</a>
+        
+        <ul class="toc toc-1">
           
-            <li class="py-1"><a href="rules/filter-rules.html" >Filter Rules</a></li>
+            <li class="toc-item"><a href="/rules/filter-rules.html" >Filter Rules</a></li>
           
-            <li class="py-1"><a href="rules/map-rules.html" >Map Rules</a></li>
+            <li class="toc-item"><a href="/rules/map-rules.html" >Map Rules</a></li>
           
-            <li class="py-1"><a href="rules/script-rules.html" >Script Rules</a></li>
+            <li class="toc-item"><a href="/rules/script-rules.html" >Script Rules</a></li>
           
         </ul>
       
+      </li>
     
-      <li class="toc-item"><a href="hardware-and-software-requirements.html" >Hardware and Software Requirements</a></li>
-      
+      <li class="toc-item">
+        <a href="/hardware-and-software-requirements.html" >Hardware and Software Requirements</a>
+        
+      </li>
+    
+      <li class="toc-item">
+        <a href="/installation.html" >Installation</a>
+        
+      </li>
     
 </ul>
   
@@ -73,14 +90,14 @@
 
 <p>Example:</p>
 
-<pre><code class="language-YAML">- name: UpdateMessageText
-  triggers: _classname == 'patrolWarning' || _classname == 'patrolAlarm'
-  type: Map
-  classname: EVENT
-  attributes:
-    msg: patrolTrapText + ' ' + patrolTrapOrigin + ' ' + patrolTrapExtra
-    serverity: "'critical'"
-</code></pre>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">UpdateMessageText</span>
+  <span class="na">triggers</span><span class="pi">:</span> <span class="s">_classname == 'patrolWarning' || _classname == 'patrolAlarm'</span>
+  <span class="na">type</span><span class="pi">:</span> <span class="s">Map</span>
+  <span class="na">classname</span><span class="pi">:</span> <span class="s">EVENT</span>
+  <span class="na">attributes</span><span class="pi">:</span>
+    <span class="na">msg</span><span class="pi">:</span> <span class="s">patrolTrapText + ' ' + patrolTrapOrigin + ' ' + patrolTrapExtra</span>
+    <span class="na">serverity</span><span class="pi">:</span> <span class="s2">"</span><span class="s">'critical'"</span>
+</code></pre></div></div>
 
 <p>If the classname is patrolWarning or the classname is patrolAlarm the msg and the severity are going to be set.</p>
 

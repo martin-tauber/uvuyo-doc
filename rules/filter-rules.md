@@ -9,7 +9,7 @@ Filter rules only have a trigger. If the rules fires, the event will be dropped,
 
 
 Examle:
-```YAML
+```yaml
 - name: FilterPatrolInformation
   triggers: _classname == 'patrolInformation'
   type: Filter

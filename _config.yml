@@ -1,5 +1,9 @@
-plugins:
-  - jekyll-toc
+# Conversion
+markdown:    kramdown
+highlighter: rouge
 
-toc:
-  list_class: toc
+# Markdown Processors
+kramdown:
+  input: GFM
+  auto_ids: true
+  syntax_highlighter: rouge  
