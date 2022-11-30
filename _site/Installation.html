@@ -77,7 +77,7 @@
       </li>
     
       <li class="toc-item">
-        <a href="/Installation.html" >Installation</a>
+        <a href="/installation.html" class="current">Installation</a>
         
       </li>
     
@@ -86,7 +86,35 @@
       </div>
 
       <div style="width: 50rem;" class="surface-section border-round-md p-3 my-3 overflow-auto">
-        <h1 id="docker">Docker</h1>
+        <h1 id="introduction">Introduction</h1>
+
+<p>The uvuyo application consists of two components. The actual uvuyo node and a kafka instance which is responsible
+for the sending relyablby sending events between two uvuyo nodes. Even if you only plan to have one node 
+running, you will need a kafka instance. Besides sending events between uvuyo nodes, the kafka instance is 
+responsible for persisting events until they are send successfully to their target system.</p>
+
+<p>The uvuyo application does not come with a kafka installation. You will need to connect the uvuyo application to
+your existing kafka installation or install a fresh kafka to use with uvuyo. This installation documentation has a
+section on how to install kafka in a docker environment to help you getting started.</p>
+
+<p>uvuyo is distributed as a docker container. We recommand to use docker to setup your application, since this simplifies
+the adminitration of the product. You can also start an uvuyo node as a java process. For more information on
+how to start uvuyo as a java process see section starting uvuyo as a java process.</p>
+
+<p>In a production environment you will install uvuyo nodes on multiple hosts for availability and perfromance
+reasons. Before you begin installing uvuyo you need to have a architectural plan in place on which hosts you
+would like to install the different components. This plan should include the source and target systems connected to
+uvuyo.</p>
+
+<p>To install uvuyo you will need to perform the following steps</p>
+
+<ol>
+  <li>Install Zookeeper</li>
+  <li>Install Kafka</li>
+  <li>Install uvuyo nodes</li>
+</ol>
+
+<h1 id="docker">Docker</h1>
 
 <p>uvuyo uses kafka to  pass events between the different nodes. In order to install uvuyo you
 need to install kafka. Kafka currently still needs a zookeeper installation running for coordination.
@@ -116,12 +144,14 @@ For more information about how to configure the bitnami zookeeper docker image g
 
 <p>Example how to run two zookeeper instances on the same host</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">--name</span> zookeeper-1 <span class="nt">--network</span> host <span class="nt">--detach</span> <span class="se">\</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">hostname</span><span class="o">=</span><span class="sb">`</span><span class="nb">hostname</span><span class="sb">`</span>
+
+docker run <span class="nt">--name</span> zookeeper-1 <span class="nt">--network</span> host <span class="nt">--detach</span> <span class="se">\</span>
 <span class="nt">-e</span> <span class="nv">ZOO_SERVER_ID</span><span class="o">=</span>1 <span class="se">\</span>
 <span class="nt">-e</span> <span class="nv">ZOO_PORT_NUMBER</span><span class="o">=</span>2181 <span class="se">\</span>
 <span class="nt">-e</span> <span class="nv">ALLOW_ANONYMOUS_LOGIN</span><span class="o">=</span><span class="nb">yes</span> <span class="se">\</span>
 <span class="nt">-e</span> <span class="nv">ZOO_ADMIN_SERVER_PORT_NUMBER</span><span class="o">=</span>8080  <span class="se">\</span>
-<span class="nt">-e</span> <span class="nv">ZOO_SERVERS</span><span class="o">=</span>localhost:2888:3888::1,localhost:2889:3889::2 <span class="se">\</span>
+<span class="nt">-e</span> <span class="nv">ZOO_SERVERS</span><span class="o">=</span><span class="nv">$hostname</span>:2888:3888::1,<span class="nv">$hostname</span>:2889:3889::2 <span class="se">\</span>
 <span class="nt">-v</span> zookeeper_1_data:/bitnami bitnami/zookeeper:3.8
 
 docker run <span class="nt">--name</span> zookeeper-2 <span class="nt">--network</span> host <span class="nt">--detach</span> <span class="se">\</span>
@@ -129,9 +159,13 @@ docker run <span class="nt">--name</span> zookeeper-2 <span class="nt">--network
 <span class="nt">-e</span> <span class="nv">ZOO_PORT_NUMBER</span><span class="o">=</span>2182 <span class="se">\</span>
 <span class="nt">-e</span> <span class="nv">ALLOW_ANONYMOUS_LOGIN</span><span class="o">=</span><span class="nb">yes</span> <span class="se">\</span>
 <span class="nt">-e</span> <span class="nv">ZOO_ADMIN_SERVER_PORT_NUMBER</span><span class="o">=</span>8081  <span class="se">\</span>
-<span class="nt">-e</span> <span class="nv">ZOO_SERVERS</span><span class="o">=</span>localhost:2888:3888::1,localhost:2889:3889::2 <span class="se">\</span>
+<span class="nt">-e</span> <span class="nv">ZOO_SERVERS</span><span class="o">=</span><span class="nv">$hostname</span>:2888:3888::1,<span class="nv">$hostname</span>:2889:3889::2 <span class="se">\</span>
 <span class="nt">-v</span> zookeeper_2_data:/bitnami bitnami/zookeeper:3.8
 </code></pre></div></div>
+
+<p>In the example above we are creating a host network, whcih means that the containers are reachable directly
+on the port of the host that they are running on. You might consider to craete a different kind of network
+to further isolate the containers.</p>
 
 <h2 id="install-kafka">Install Kafka</h2>
 
@@ -153,35 +187,67 @@ For more informantion about how to configure the bitnami kafka docker image go t
 <p>Example how to run two kafka instances on the same host. This example uses the zookeeper containers created 
 in the previous example where we ran two zookeeper containers on one host.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">--name</span> kafka-1 <span class="nt">--network</span> host <span class="nt">--detach</span> <span class="se">\</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">hostname</span><span class="o">=</span><span class="sb">`</span><span class="nb">hostname</span><span class="sb">`</span>
+
+docker run <span class="nt">--name</span> kafka-1 <span class="nt">--network</span> host <span class="nt">--detach</span> <span class="se">\</span>
 <span class="nt">-e</span> <span class="nv">KAFKA_BROKER_ID</span><span class="o">=</span>1 <span class="se">\</span>
-<span class="nt">-e</span> <span class="nv">KAFKA_CFG_ZOOKEEPER_CONNECT</span><span class="o">=</span>localhost:2181,localhost:2182 <span class="se">\</span>
+<span class="nt">-e</span> <span class="nv">KAFKA_CFG_ZOOKEEPER_CONNECT</span><span class="o">=</span><span class="nv">$hostname</span>:2181,<span class="nv">$hostname</span>:2182 <span class="se">\</span>
 <span class="nt">-e</span> <span class="nv">KAFKA_CFG_LISTENERS</span><span class="o">=</span>PLAINTEXT://:9091 <span class="se">\</span>
-<span class="nt">-e</span> <span class="nv">KAFKA_CFG_ADVERTISED_LISTENERS</span><span class="o">=</span>PLAINTEXT://localhost:9091 <span class="se">\</span>
+<span class="nt">-e</span> <span class="nv">KAFKA_CFG_ADVERTISED_LISTENERS</span><span class="o">=</span>PLAINTEXT://<span class="nv">$hostname</span>:9091 <span class="se">\</span>
 <span class="nt">-e</span> <span class="nv">ALLOW_PLAINTEXT_LISTENER</span><span class="o">=</span><span class="nb">yes</span> <span class="se">\</span>
 <span class="nt">-v</span> kafka_1_data:/bitnami docker.io/bitnami/kafka:3.2
 
 docker run <span class="nt">--name</span> kafka-2 <span class="nt">--network</span> host <span class="nt">--detach</span> <span class="se">\</span>
 <span class="nt">-e</span> <span class="nv">KAFKA_BROKER_ID</span><span class="o">=</span>2 <span class="se">\</span>
-<span class="nt">-e</span> <span class="nv">KAFKA_CFG_ZOOKEEPER_CONNECT</span><span class="o">=</span>localhost:2181,localhost:2182 <span class="se">\</span>
+<span class="nt">-e</span> <span class="nv">KAFKA_CFG_ZOOKEEPER_CONNECT</span><span class="o">=</span><span class="nv">$hostname</span>:2181,<span class="nv">$hostname</span>:2182 <span class="se">\</span>
 <span class="nt">-e</span> <span class="nv">KAFKA_CFG_LISTENERS</span><span class="o">=</span>PLAINTEXT://:9092 <span class="se">\</span>
-<span class="nt">-e</span> <span class="nv">KAFKA_CFG_ADVERTISED_LISTENERS</span><span class="o">=</span>PLAINTEXT://localhost:9092 <span class="se">\</span>
+<span class="nt">-e</span> <span class="nv">KAFKA_CFG_ADVERTISED_LISTENERS</span><span class="o">=</span>PLAINTEXT://<span class="nv">$hostname</span>:9092 <span class="se">\</span>
 <span class="nt">-e</span> <span class="nv">ALLOW_PLAINTEXT_LISTENER</span><span class="o">=</span><span class="nb">yes</span> <span class="se">\</span>
 <span class="nt">-v</span> kafka_2_data:/bitnami docker.io/bitnami/kafka:3.2
 </code></pre></div></div>
 
 <h3 id="creating-kafka-topics">Creating kafka topics</h3>
 
+<p>Kafka topics are used to send events between connectors and adapters. Connectors and Adapters are attached to topics
+using the dispatcherId property while being configured. Every DispatcherId will automatically create two kafka topics.
+One to send events from the connector to the adpater called <code class="language-plaintext highlighter-rouge">send</code> and one to send replies from the adapter to the 
+connector called <code class="language-plaintext highlighter-rouge">reply</code>. The topic name is generated by using the prefix <code class="language-plaintext highlighter-rouge">net.2yetis.uvuyo.</code> 
+conacted with with dispatcherId and the prefix <code class="language-plaintext highlighter-rouge">.send</code> or <code class="language-plaintext highlighter-rouge">.reply</code>.</p>
+
+<p>Even though tokics are created automatically for availability and scalability reasons we would create the topics manually
+to meet these requirements. For availablity we would add a <code class="language-plaintext highlighter-rouge">--replication-factor</code> parameter. For scalability we would
+add the <code class="language-plaintext highlighter-rouge">--partition</code> parameter.</p>
+
+<p>Our recommandation is to run two kafka nodes in test environments and at least three kafka nodes in production. In test
+you should then set the <code class="language-plaintext highlighter-rouge">--replication-factor</code> to 2 and the <code class="language-plaintext highlighter-rouge">--partitions</code> to 2.</p>
+
+<p><strong>Example:</strong></p>
+
+<p>login to one of the kafka nodes just created</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker <span class="nb">exec</span> <span class="nt">-it</span> &lt;kafkaNode&gt; bash
+</code></pre></div></div>
+
+<p>Execute the command to create a topic</p>
+
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kafka-topics.sh <span class="nt">--create</span> <span class="se">\</span>
 <span class="nt">--topic</span> net.2yetis.uvuyo.bppm2HelixITSM.send <span class="se">\</span>
 <span class="nt">--replication-factor</span> 2 <span class="se">\</span>
 <span class="nt">--partitions</span> 2 <span class="se">\</span>
-<span class="nt">--bootstrap-server</span> kafka-server:9092 <span class="se">\</span>
+<span class="nt">--bootstrap-server</span> <span class="nb">hostname</span>:9092
 </code></pre></div></div>
+
+<p>Don’t forget to replace the hostname in the last command with the hostname on which the kafka node is running.</p>
 
 <h2 id="install-uvuyo">Install uvuyo</h2>
 
+<p>The last step is to install the uvuyo containers. To do so we need to setup the appropriate file structures so
+that we are able to configure the uvuyo nodes.</p>
+
 <h3 id="prepare-the-installation-directory">Prepare the installation directory</h3>
+
+<p>The uvuyo nodes use the <code class="language-plaintext highlighter-rouge">etc</code> directory to read their configuration files. Therefor we need to create an <code class="language-plaintext highlighter-rouge">etc</code>
+directory which will later be mounted into the docker container of the uvuyo node.</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo mkdir</span> <span class="nt">-p</span> /opt/2yetis/uvuyo/etc
 <span class="nb">sudo chown</span> <span class="nt">-R</span> ubuntu:ubuntu /opt/2yetis
@@ -217,40 +283,21 @@ when started. By default the {nodeid} is uvuyo.</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">---</span>
 <span class="na">connectors</span><span class="pi">:</span>
-<span class="pi">-</span> <span class="na">driver</span><span class="pi">:</span> <span class="s2">"</span><span class="s">net.the2yetis.uvuyo.integration.bppm.BppmEventConnector"</span>
+<span class="pi">-</span> <span class="na">driver</span><span class="pi">:</span> <span class="s2">"</span><span class="s">net.the2yetis.uvuyo.integration.test.TestEventConnector"</span>
+  <span class="na">id</span><span class="pi">:</span> <span class="s2">"</span><span class="s">testConnector"</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">testConnector"</span>
   <span class="na">node</span><span class="pi">:</span> <span class="s2">"</span><span class="s">uvuyo"</span>
-  <span class="na">id</span><span class="pi">:</span> <span class="s2">"</span><span class="s">bppm"</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">BPPM"</span>
   <span class="na">dispatcherId</span><span class="pi">:</span> <span class="s2">"</span><span class="s">bppm2HelixITSM"</span>
   <span class="na">active</span><span class="pi">:</span> <span class="no">true</span>
   <span class="na">ruleModules</span><span class="pi">:</span> <span class="pi">[]</span>
-  <span class="na">port</span><span class="pi">:</span> <span class="m">1828</span>
-  <span class="na">timeout</span><span class="pi">:</span> <span class="m">1000</span>
 <span class="na">adapters</span><span class="pi">:</span>
-<span class="pi">-</span> <span class="na">driver</span><span class="pi">:</span> <span class="s2">"</span><span class="s">net.the2yetis.uvuyo.integration.helixItsm.HelixItsmEventAdapter"</span>
+<span class="pi">-</span> <span class="na">driver</span><span class="pi">:</span> <span class="s2">"</span><span class="s">net.the2yetis.uvuyo.integration.test.TestEventAdapter"</span>
+  <span class="na">id</span><span class="pi">:</span> <span class="s2">"</span><span class="s">testAdapter"</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">testAdapter"</span>
   <span class="na">node</span><span class="pi">:</span> <span class="s2">"</span><span class="s">uvuyo"</span>
-  <span class="na">id</span><span class="pi">:</span> <span class="s2">"</span><span class="s">helixItsmEventAdapter"</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">HelixItsmEventAdapter"</span>
   <span class="na">dispatcherId</span><span class="pi">:</span> <span class="s2">"</span><span class="s">bppm2HelixITSM"</span>
   <span class="na">active</span><span class="pi">:</span> <span class="no">true</span>
-  <span class="na">ruleModules</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">uvuyo2HelixITSM</span><span class="pi">]</span>
-  <span class="na">url</span><span class="pi">:</span> <span class="s2">"</span><span class="s">https://aena-dev-restapi.onbmc.com"</span>
-  <span class="na">jwtRefreshInterval</span><span class="pi">:</span> <span class="m">300</span>
-  <span class="na">username</span><span class="pi">:</span> <span class="s2">"</span><span class="s">activationuser"</span>
-  <span class="na">password</span><span class="pi">:</span> <span class="s2">"</span><span class="s">LCu3Ecrw9-zyF6d5"</span>
-  <span class="na">form</span><span class="pi">:</span> <span class="s2">"</span><span class="s">HPD:IncidentInterface_Create"</span>
-  <span class="na">attributes</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="s">First_Name</span>
-  <span class="pi">-</span> <span class="s">Last_Name</span>
-  <span class="pi">-</span> <span class="s">Description</span>
-  <span class="pi">-</span> <span class="s">Impact</span>
-  <span class="pi">-</span> <span class="s">Urgency</span>
-  <span class="pi">-</span> <span class="s">Status</span>
-  <span class="pi">-</span> <span class="s2">"</span><span class="s">Reported</span><span class="nv"> </span><span class="s">Source"</span>
-  <span class="pi">-</span> <span class="s">Service_Type</span>
-  <span class="pi">-</span> <span class="s2">"</span><span class="s">Assigned</span><span class="nv"> </span><span class="s">Group"</span>
-  <span class="pi">-</span> <span class="s2">"</span><span class="s">Assigned</span><span class="nv"> </span><span class="s">Support</span><span class="nv"> </span><span class="s">Organization"</span>
-  <span class="pi">-</span> <span class="s2">"</span><span class="s">Assigned</span><span class="nv"> </span><span class="s">Support</span><span class="nv"> </span><span class="s">Company"</span>
+  <span class="na">ruleModules</span><span class="pi">:</span> <span class="pi">[]</span>
 </code></pre></div></div>
 
 <h3 id="create-the-rules-file">Create the rules file</h3>
@@ -276,9 +323,9 @@ the appropriate rules module.</p>
     <span class="na">Status</span><span class="pi">:</span> <span class="s2">"</span><span class="s">'Assigned'"</span>
     <span class="s2">"</span><span class="s">Reported</span><span class="nv"> </span><span class="s">Source"</span><span class="err">:</span> <span class="s2">"</span><span class="s">'BMC</span><span class="nv"> </span><span class="s">Impact</span><span class="nv"> </span><span class="s">Manager</span><span class="nv"> </span><span class="s">Event'"</span>
     <span class="na">Service_Type</span><span class="pi">:</span> <span class="s2">"</span><span class="s">'User</span><span class="nv"> </span><span class="s">Service</span><span class="nv"> </span><span class="s">Restoration'"</span>
-    <span class="s2">"</span><span class="s">Assigned</span><span class="nv"> </span><span class="s">Group"</span><span class="err">:</span> <span class="s2">"</span><span class="s">'ABC</span><span class="nv"> </span><span class="s">-</span><span class="nv"> </span><span class="s">EscaladoSMS'"</span>
-    <span class="s2">"</span><span class="s">Assigned</span><span class="nv"> </span><span class="s">Support</span><span class="nv"> </span><span class="s">Organization"</span><span class="err">:</span> <span class="s2">"</span><span class="s">'ABC</span><span class="nv"> </span><span class="s">-</span><span class="nv"> </span><span class="s">ESCALADOS'"</span>
-    <span class="s2">"</span><span class="s">Assigned</span><span class="nv"> </span><span class="s">Support</span><span class="nv"> </span><span class="s">Company"</span><span class="err">:</span> <span class="s2">"</span><span class="s">'Aena'"</span>
+    <span class="s2">"</span><span class="s">Assigned</span><span class="nv"> </span><span class="s">Group"</span><span class="err">:</span> <span class="s2">"</span><span class="s">'a</span><span class="nv"> </span><span class="s">user</span><span class="nv"> </span><span class="s">group'"</span>
+    <span class="s2">"</span><span class="s">Assigned</span><span class="nv"> </span><span class="s">Support</span><span class="nv"> </span><span class="s">Organization"</span><span class="err">:</span> <span class="s2">"</span><span class="s">'an</span><span class="nv"> </span><span class="s">organization'"</span>
+    <span class="s2">"</span><span class="s">Assigned</span><span class="nv"> </span><span class="s">Support</span><span class="nv"> </span><span class="s">Company"</span><span class="err">:</span> <span class="s2">"</span><span class="s">'2yetis'"</span>
 </code></pre></div></div>
 
 <h3 id="create-a-volume">Create a volume</h3>
@@ -291,15 +338,18 @@ we need to create a docker volume pointing to the just created etc directory.</p
 
 <h3 id="run-the-uvuyo-docker-container">Run the uvuyo docker container</h3>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">--name</span> unode <span class="nt">--network</span> host <span class="nt">--detach</span> <span class="se">\</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">--name</span> unode-1 <span class="nt">--network</span> host <span class="nt">--detach</span> <span class="se">\</span>
+<span class="nt">-e</span> <span class="nv">UVUYO_NODEID</span><span class="o">=</span>unode-1 <span class="se">\</span>
+<span class="nt">-e</span> <span class="nv">UVUYO_GROUPID</span><span class="o">=</span>company-dev <span class="se">\</span>
 <span class="nt">-v</span> uvuyo_etc:/app/uvuyo/etc the2yetis/uvuyo
 </code></pre></div></div>
 
+<h1 id="starting-uvuyo-as-a-java-process">Starting uvuyo as a java process</h1>
 
       </div>
 
       <div style="width: 14rem;">
-        <ul class="toc"><li class="toc-item"><a href="#docker">Docker</a><ul class="toc toc-1"><li class="toc-item"><a href="#install-zookeeper">Install Zookeeper</a></li><li class="toc-item"><a href="#install-kafka">Install Kafka</a></li><li class="toc-item"><a href="#install-uvuyo">Install uvuyo</a></li></ul></li></ul>
+        <ul class="toc"><li class="toc-item"><a href="#introduction">Introduction</a></li><li class="toc-item"><a href="#docker">Docker</a><ul class="toc toc-1"><li class="toc-item"><a href="#install-zookeeper">Install Zookeeper</a></li><li class="toc-item"><a href="#install-kafka">Install Kafka</a></li><li class="toc-item"><a href="#install-uvuyo">Install uvuyo</a></li></ul></li><li class="toc-item"><a href="#starting-uvuyo-as-a-java-process">Starting uvuyo as a java process</a></li></ul>
       </div>
     </div>
   </body>
